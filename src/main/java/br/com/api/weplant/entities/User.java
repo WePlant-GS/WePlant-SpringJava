@@ -1,5 +1,6 @@
 package br.com.api.weplant.entities;
 
+import br.com.api.weplant.dto.UserDTO;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -54,4 +55,13 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Post> postList;
 
+    public User(String name, Calendar birthday, String username, String email, Character status, Address address, Phone phone) {
+        this.name = name;
+        this.birthday = birthday;
+        this.username = username;
+        this.email = email;
+        this.status = status;
+        this.address = address;
+        this.phone = phone;
+    }
 }

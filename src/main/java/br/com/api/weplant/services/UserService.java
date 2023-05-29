@@ -1,5 +1,6 @@
 package br.com.api.weplant.services;
 
+import br.com.api.weplant.dto.UserDTO;
 import br.com.api.weplant.entities.User;
 import br.com.api.weplant.exceptions.NoDataFoundException;
 import br.com.api.weplant.repositories.UserRepository;
@@ -45,4 +46,15 @@ public class UserService {
         userToAtt.setPhone(user.getPhone());
     }
 
+    public User fromDTO(UserDTO userDTO) {
+        return new User(
+                userDTO.getName(),
+                userDTO.getBirthday(),
+                userDTO.getUsername(),
+                userDTO.getEmail(),
+                userDTO.getStatus(),
+                userDTO.getAddress(),
+                userDTO.getPhone()
+        );
+    }
 }
