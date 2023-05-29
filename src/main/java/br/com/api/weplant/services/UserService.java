@@ -35,8 +35,9 @@ public class UserService {
     }
 
     public void delete(Long id) {
-        findById(id);
-        userRepository.deleteById(id);
+        User user = findById(id);
+        user.setStatus('I');
+        userRepository.save(user);
     }
 
     public void dataUpdate(User userToAtt, User user) {
@@ -51,7 +52,6 @@ public class UserService {
                 userDTO.getName(),
                 userDTO.getBirthday(),
                 userDTO.getUsername(),
-                userDTO.getEmail(),
                 userDTO.getStatus(),
                 userDTO.getAddress(),
                 userDTO.getPhone()

@@ -4,6 +4,7 @@ package br.com.api.weplant.dto;
 import br.com.api.weplant.entities.Address;
 import br.com.api.weplant.entities.Phone;
 import br.com.api.weplant.entities.User;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,8 +22,6 @@ public class UserDTO {
 
     private String username;
 
-    private String email;
-
     private Character status;
 
     private Address address;
@@ -33,7 +32,6 @@ public class UserDTO {
         this.name = user.getName();
         this.birthday = user.getBirthday();
         this.username = user.getUsername();
-        this.email = user.getEmail();
         this.status = user.getStatus();
         this.address = user.getAddress();
         this.phone = user.getPhone();
