@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "tb_wp_comments")
+@Table(name = "tb_wp_comment")
 public class Comment {
 
     @Id

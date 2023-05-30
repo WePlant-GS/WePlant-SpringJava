@@ -1,6 +1,7 @@
 package br.com.api.weplant.entities;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import br.com.api.weplant.dto.UserRegister;
+import br.com.api.weplant.dto.UserNoProtectedDataDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,7 +28,6 @@ public class User {
     private String name;
 
     @Column(nullable = false)
-    @JsonFormat(pattern = "dd/MM/yyyy")
     private Calendar birthday;
 
     @Column(name = "username", length = 20, nullable = false)
@@ -54,12 +54,23 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Post> postList;
 
-    public User(String name, Calendar birthday, String username, Character status, Address address, Phone phone) {
-        this.name = name;
-        this.birthday = birthday;
-        this.username = username;
-        this.status = status;
-        this.address = address;
-        this.phone = phone;
+    public User(UserRegister userRegister) {
+        this.name = userRegister.name();
+        this.birthday = userRegister.birthday();
+        this.username = userRegister.username();
+        this.email = userRegister.email();
+        this.password = userRegister.password();
+        this.status = 'A';
+        setAddress(userRegister.address());
+        setPhone(userRegister.phone());
+    }
+
+    public User(UserNoProtectedDataDTO userNoProtectedDataDTO) {
+        this.name = userNoProtectedDataDTO.name();
+        this.birthday = userNoProtectedDataDTO.birthday();
+        this.username = userNoProtectedDataDTO.username();
+        this.email = userNoProtectedDataDTO.email();
+        this.address = userNoProtectedDataDTO.address();
+        this.phone = userNoProtectedDataDTO.phone();
     }
 }
