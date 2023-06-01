@@ -1,6 +1,6 @@
 package br.com.api.weplant.entities;
 
-import br.com.api.weplant.dto.UserRegister;
+import br.com.api.weplant.dto.UserRegisterDTO;
 import br.com.api.weplant.dto.UserNoProtectedDataDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -33,19 +33,19 @@ public class User {
     @Column(name = "username", length = 20, nullable = false)
     private String username;
 
-    @Column(name = "user_email", length = 15)
+    @Column(name = "user_email", length = 30)
     private String email;
 
     @Column(name = "user_password", nullable = false)
     private String password;
 
     @Column(name = "user_status", length = 1, nullable = false)
-    private Character status;
+    private String status;
 
-    @Embedded
+    @OneToOne
     private Address address;
 
-    @Embedded
+    @OneToOne
     private Phone phone;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
@@ -54,15 +54,19 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Post> postList;
 
-    public User(UserRegister userRegister) {
-        this.name = userRegister.name();
-        this.birthday = userRegister.birthday();
-        this.username = userRegister.username();
-        this.email = userRegister.email();
-        this.password = userRegister.password();
-        this.status = 'A';
-        setAddress(userRegister.address());
-        setPhone(userRegister.phone());
+    public void addGarden(Garden garden) {
+        gardenList.add(garden);
+    }
+
+    public User(UserRegisterDTO userRegisterDTO) {
+        this.name = userRegisterDTO.name();
+        this.birthday = userRegisterDTO.birthday();
+        this.username = userRegisterDTO.username();
+        this.email = userRegisterDTO.email();
+        this.password = userRegisterDTO.password();
+        this.status = "A";
+        setAddress(userRegisterDTO.address());
+        setPhone(userRegisterDTO.phone());
     }
 
     public User(UserNoProtectedDataDTO userNoProtectedDataDTO) {

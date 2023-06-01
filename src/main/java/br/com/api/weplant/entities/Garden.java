@@ -1,5 +1,7 @@
 package br.com.api.weplant.entities;
 
+import br.com.api.weplant.dto.GardenDTO;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -32,6 +34,13 @@ public class Garden {
     private Character type;//Pode ser V (Vertical) ou H (Horizontal)
 
     @ManyToOne(cascade = CascadeType.DETACH)
+    @JsonIgnore
     private User user;
 
+    public Garden(GardenDTO gardenRegister) {
+        this.name = gardenRegister.name();
+        this.status = gardenRegister.status();
+        this.plant = gardenRegister.plant();
+        this.type = gardenRegister.type();
+    }
 }

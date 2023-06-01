@@ -1,8 +1,9 @@
 package br.com.api.weplant.services;
 
-import br.com.api.weplant.dto.UserRegister;
+import br.com.api.weplant.dto.UserRegisterDTO;
 import br.com.api.weplant.dto.UserNoProtectedDataDTO;
 import br.com.api.weplant.entities.Address;
+import br.com.api.weplant.entities.Garden;
 import br.com.api.weplant.entities.Phone;
 import br.com.api.weplant.entities.User;
 import br.com.api.weplant.exceptions.NoDataFoundException;
@@ -19,6 +20,15 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private GardenService gardenService;
+
+    @Autowired
+    private AddressService addressService;
+
+    @Autowired
+    private PhoneService phoneService;
+
     public List<User> findAll() {
         return userRepository.findAll();
     }
@@ -28,6 +38,8 @@ public class UserService {
     }
 
     public User insert(User user) {
+        addressService.insert(user.getAddress());
+        phoneService.insert(user.getPhone());
         return userRepository.save(user);
     }
 
@@ -40,8 +52,16 @@ public class UserService {
 
     public void delete(Long id) {
         User user = findById(id);
-        user.setStatus('I');
+        user.setStatus("I");
         userRepository.save(user);
+    }
+
+    public void addNewGarden(Garden garden, Long id) {
+        User user = findById(id);
+        user.addGarden(garden);
+        userRepository.save(user);
+        userRepository.flush();
+        gardenService.insert(garden);
     }
 
     public void dataUpdate(User userToAtt, User user) {
@@ -62,8 +82,8 @@ public class UserService {
 
     }
 
-    public User fromDTORegister(UserRegister userRegister) {
-        return new User(userRegister);
+    public User fromDTORegister(UserRegisterDTO userRegisterDTO) {
+        return new User(userRegisterDTO);
     }
 
     public User fromDTOResponse(UserNoProtectedDataDTO userNoProtectedDataDTO) {
