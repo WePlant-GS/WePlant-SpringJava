@@ -54,6 +54,9 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Post> postList;
 
+    @OneToMany(mappedBy = "user")
+    private List<Comment> comments;
+
     public void addGarden(Garden garden) {
         gardenList.add(garden);
     }
