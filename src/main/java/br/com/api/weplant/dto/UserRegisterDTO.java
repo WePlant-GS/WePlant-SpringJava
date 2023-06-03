@@ -9,6 +9,7 @@ import jakarta.validation.constraints.NotNull;
 import java.util.Calendar;
 
 public record UserRegisterDTO(
+
         @NotNull @NotBlank @NotNull
         String name,
 

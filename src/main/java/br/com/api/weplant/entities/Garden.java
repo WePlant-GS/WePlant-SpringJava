@@ -8,6 +8,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
@@ -31,7 +33,10 @@ public class Garden {
     private String plant;
 
     @Column(length = 1)
-    private Character type;//Pode ser V (Vertical) ou H (Horizontal)
+    private String type;//Pode ser V (Vertical) ou H (Horizontal)
+
+    @OneToMany(mappedBy = "user")
+    private List<Note> notes;
 
     @ManyToOne(cascade = CascadeType.DETACH)
     @JsonIgnore
@@ -43,4 +48,9 @@ public class Garden {
         this.plant = gardenRegister.plant();
         this.type = gardenRegister.type();
     }
+
+    public void addNote(Note note) {
+        this.notes.add(note);
+    }
+
 }

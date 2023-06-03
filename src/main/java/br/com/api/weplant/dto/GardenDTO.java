@@ -18,7 +18,7 @@ public record GardenDTO(
          String plant,
 
          @Length(max = 1) @NotNull @NotBlank
-         Character type
+         String type
 ) {
 
     public GardenDTO(Garden garden) {
