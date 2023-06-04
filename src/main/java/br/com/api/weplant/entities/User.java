@@ -1,15 +1,24 @@
 package br.com.api.weplant.entities;
 
-import br.com.api.weplant.dto.UserRegisterDTO;
+import java.time.LocalDate;
+import java.util.List;
+
 import br.com.api.weplant.dto.UserNoProtectedDataDTO;
-import jakarta.persistence.*;
+import br.com.api.weplant.dto.UserRegisterDTO;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.Calendar;
-import java.util.List;
 
 @Entity
 @AllArgsConstructor
@@ -17,35 +26,36 @@ import java.util.List;
 @Builder
 @Data
 @Table(name = "tb_wp_user")
-@SequenceGenerator(name = "userSequence", sequenceName = "SQ_TB_WP_USER",allocationSize = 1)
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "userSequence")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "compl_name", length = 30, nullable = false)
     private String name;
 
     @Column(nullable = false)
-    private Calendar birthday;
+    private LocalDate birthday;
 
-    @Column(name = "username", length = 20, nullable = false)
+    @Column(name = "username", length = 20, nullable = false, unique = true)
     private String username;
 
-    @Column(name = "user_email", length = 30)
+    @Column(name = "user_email", length = 30, nullable = false, unique = true)
     private String email;
 
-    @Column(name = "user_password", nullable = false)
+    @Column(name = "user_password", nullable = false,length = 100)
     private String password;
 
     @Column(name = "user_status", length = 1, nullable = false)
-    private String status;
+    private Character status;
 
     @OneToOne
+    @JoinColumn(nullable = false, unique = true)
     private Address address;
 
     @OneToOne
+    @JoinColumn(nullable = false, unique = true)
     private Phone phone;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
@@ -67,7 +77,7 @@ public class User {
         this.username = userRegisterDTO.username();
         this.email = userRegisterDTO.email();
         this.password = userRegisterDTO.password();
-        this.status = "A";
+        this.status = 'A';
         setAddress(userRegisterDTO.address());
         setPhone(userRegisterDTO.phone());
     }

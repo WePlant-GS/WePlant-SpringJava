@@ -1,7 +1,14 @@
 package br.com.api.weplant.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,24 +29,26 @@ public class Address {
     @Column(length = 6, name = "house_number")
     private String number;
 
-    @Column(length = 25)
+    @Column(length = 50, nullable = false)
     private String street;
 
-    @Column(length = 25)
+    @Column(length = 50, nullable = false)
     private String neighborhood;
 
-    @Column(length = 25)
+    @Column(length = 50, nullable = false)
     private String city;
 
-    @Column(length = 25)
+    @Column(length = 50, nullable = false)
     private String state;
 
-    @Column(length = 40)
+    @Column(length = 8, nullable = false)
+    private String zip_code;
+
+    @Column(length = 50, nullable = false)
     private String country;
 
     @OneToOne(mappedBy = "address")
-    @JoinColumn(name = "user_id")
     @JsonIgnore
     private User user;
-    
+
 }

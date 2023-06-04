@@ -1,8 +1,17 @@
 package br.com.api.weplant.entities;
 
-import br.com.api.weplant.dto.GardenDTO;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
+
+import br.com.api.weplant.dto.GardenDTO;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,26 +23,26 @@ import lombok.NoArgsConstructor;
 @Builder
 @Data
 @Table(name = "tb_wp_garden")
-@SequenceGenerator(name = "gardenSequence", sequenceName = "SQ_TB_WP_GARDEN",allocationSize = 1)
 public class Garden {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "gardenSequence")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "garden_name", length = 20, nullable = false)
+    @Column(name = "garden_name", length = 50, nullable = false)
     private String name;
 
-    @Column(nullable = false)
+    @Column(nullable = false,length = 15)
     private String status;
 
-    @Column(nullable = false)
+    @Column(nullable = false,length = 50)
     private String plant;
 
-    @Column(length = 1)
+    @Column(length = 1,nullable = false)
     private Character type;//Pode ser V (Vertical) ou H (Horizontal)
 
     @ManyToOne(cascade = CascadeType.DETACH)
+    @JoinColumn(nullable = false)
     @JsonIgnore
     private User user;
 

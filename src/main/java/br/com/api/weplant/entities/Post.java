@@ -1,12 +1,21 @@
 package br.com.api.weplant.entities;
 
-import jakarta.persistence.*;
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.List;
 
 @Entity
 @AllArgsConstructor
@@ -14,11 +23,10 @@ import java.util.List;
 @Builder
 @Data
 @Table(name = "tb_wp_post")
-@SequenceGenerator(name = "postSequence", sequenceName = "SQ_TB_WP_POST",allocationSize = 1)
 public class Post {
 
     @Id
-    @GeneratedValue(generator = "postSequence", strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String image;
@@ -27,6 +35,7 @@ public class Post {
     private String description;
 
     @ManyToOne(cascade = CascadeType.DETACH)
+    @JoinColumn(nullable = false)
     private User user;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.MERGE)

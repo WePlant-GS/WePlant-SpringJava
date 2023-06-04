@@ -1,18 +1,19 @@
 package br.com.api.weplant.services;
 
-import br.com.api.weplant.dto.UserRegisterDTO;
+import java.time.LocalDate;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import br.com.api.weplant.dto.UserNoProtectedDataDTO;
+import br.com.api.weplant.dto.UserRegisterDTO;
 import br.com.api.weplant.entities.Address;
 import br.com.api.weplant.entities.Garden;
 import br.com.api.weplant.entities.Phone;
 import br.com.api.weplant.entities.User;
 import br.com.api.weplant.exceptions.NoDataFoundException;
 import br.com.api.weplant.repositories.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.util.Calendar;
-import java.util.List;
 
 @Service
 public class UserService {
@@ -52,7 +53,7 @@ public class UserService {
 
     public void delete(Long id) {
         User user = findById(id);
-        user.setStatus("I");
+        user.setStatus('I');
         userRepository.save(user);
     }
 
@@ -71,7 +72,7 @@ public class UserService {
         String Username = (user.getUsername() != null && user.getUsername().isEmpty() && user.getUsername().isBlank()) ? user.getUsername() : userToAtt.getUsername();
         userToAtt.setUsername(Username);
 
-        Calendar calendar = user.getBirthday() != null ? user.getBirthday() : userToAtt.getBirthday();
+        LocalDate calendar = user.getBirthday() != null ? user.getBirthday() : userToAtt.getBirthday();
         userToAtt.setBirthday(calendar);
 
         Address address = user.getAddress() != null ? user.getAddress() : userToAtt.getAddress();
