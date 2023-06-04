@@ -21,7 +21,7 @@ public record UserNoProtectedDataDTO(
 
      String email,
 
-     String status,
+     Character status,
 
      Address address,
 

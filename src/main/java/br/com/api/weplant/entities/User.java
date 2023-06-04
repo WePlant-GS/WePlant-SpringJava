@@ -32,13 +32,13 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "compl_name", length = 30, nullable = false)
+    @Column(name = "complete_name", length = 30, nullable = false)
     private String name;
 
     @Column(nullable = false)
     private LocalDate birthday;
 
-    @Column(name = "username", length = 20, nullable = false, unique = true)
+    @Column(length = 20, nullable = false, unique = true)
     private String username;
 
     @Column(name = "user_email", length = 30, nullable = false, unique = true)

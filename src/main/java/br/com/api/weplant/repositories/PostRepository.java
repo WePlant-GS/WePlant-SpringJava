@@ -6,4 +6,5 @@ import br.com.api.weplant.entities.Post;
 
 
 public interface PostRepository extends JpaRepository<Post, Long> {
+
 }
