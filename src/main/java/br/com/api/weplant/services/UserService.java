@@ -1,19 +1,18 @@
 package br.com.api.weplant.services;
 
-import java.time.LocalDate;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import br.com.api.weplant.dto.UserNoProtectedDataDTO;
+import br.com.api.weplant.dto.PostReducedDTO;
 import br.com.api.weplant.dto.UserRegisterDTO;
-import br.com.api.weplant.entities.Address;
-import br.com.api.weplant.entities.Garden;
-import br.com.api.weplant.entities.Phone;
-import br.com.api.weplant.entities.User;
+import br.com.api.weplant.dto.UserNoProtectedDataDTO;
+import br.com.api.weplant.entities.*;
 import br.com.api.weplant.exceptions.NoDataFoundException;
 import br.com.api.weplant.repositories.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
+import java.util.Calendar;
+import java.util.List;
 
 @Service
 public class UserService {
@@ -26,6 +25,9 @@ public class UserService {
 
     @Autowired
     private AddressService addressService;
+
+    @Autowired
+    private PostService postService;
 
     @Autowired
     private PhoneService phoneService;
@@ -65,6 +67,10 @@ public class UserService {
         userRepository.save(user);
         userRepository.flush();
         gardenService.insert(garden);
+    }
+
+    public Page<PostReducedDTO> findAllUserPostByUserId(Long id, Pageable pageable) {
+        return postService.findAllByUserId(id, pageable).map(PostReducedDTO::new);
     }
 
     public void dataUpdate(User userToAtt, User user) {

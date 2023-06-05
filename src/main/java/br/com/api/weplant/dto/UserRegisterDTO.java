@@ -10,6 +10,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 public record UserRegisterDTO(
+
         @NotNull @NotBlank @NotNull
         String name,
 

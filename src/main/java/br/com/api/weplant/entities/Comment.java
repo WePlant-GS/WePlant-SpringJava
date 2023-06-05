@@ -15,6 +15,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Calendar;
+
 @Entity
 @Data
 @NoArgsConstructor
@@ -32,6 +34,9 @@ public class Comment {
     @ManyToOne(cascade = CascadeType.DETACH)
     @JoinColumn(nullable = false)
     private User user;
+
+    @Column(name = "comment_date", nullable = false)
+    private Calendar date;
 
     @ManyToOne(cascade = CascadeType.DETACH)
     @JoinColumn(nullable = false)
