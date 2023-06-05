@@ -20,6 +20,7 @@ public class Note {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false, length = 200)
     private String body;
 
     @ManyToOne(cascade = CascadeType.DETACH)
@@ -29,11 +30,12 @@ public class Note {
     private Calendar date;
 
     @ManyToOne(cascade = CascadeType.DETACH)
+    @JoinColumn(nullable = false)
     private User user;
 
     public Note(NoteDTO noteDTO) {
         this.body = noteDTO.getBody();
         this.date = Calendar.getInstance();
     }
-
+  
 }

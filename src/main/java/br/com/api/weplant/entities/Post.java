@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.util.Calendar;
 import java.util.List;
 
@@ -16,11 +15,10 @@ import java.util.List;
 @Builder
 @Data
 @Table(name = "tb_wp_post")
-@SequenceGenerator(name = "postSequence", sequenceName = "SQ_TB_WP_POST",allocationSize = 1)
 public class Post {
 
     @Id
-    @GeneratedValue(generator = "postSequence", strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String image;
@@ -32,6 +30,7 @@ public class Post {
     private Calendar date;
 
     @ManyToOne(cascade = CascadeType.DETACH)
+    @JoinColumn(nullable = false)
     private User user;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.MERGE)

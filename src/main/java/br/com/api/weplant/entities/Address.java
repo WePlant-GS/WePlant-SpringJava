@@ -29,24 +29,27 @@ public class Address {
     @Column(length = 6, name = "house_number")
     private String number;
 
-    @Column(length = 50)
+    @Column(length = 50, nullable = false)
     private String street;
 
-    @Column(length = 50)
+    @Column(length = 50, nullable = false)
     private String neighborhood;
 
-    @Column(length = 50)
+    @Column(length = 50, nullable = false)
     private String city;
 
-    @Column(length = 50)
+    @Column(length = 50, nullable = false)
     private String state;
 
-    @Column(length = 50)
+    @Column(length = 8, nullable = false)
+    private String zip_code;
+
+    @Column(length = 50, nullable = false)
+
     private String country;
 
     @OneToOne(mappedBy = "address")
-    @JoinColumn(name = "user_id")
     @JsonIgnore
     private User user;
-    
+
 }

@@ -32,12 +32,14 @@ public class UserService {
     @Autowired
     private PhoneService phoneService;
 
+ 
     public List<User> findAll() {
         return userRepository.findAll();
     }
 
     public User findById(Long id) {
-        return userRepository.findById(id).orElseThrow((() -> new NoDataFoundException("User with id " + id + " not found")));
+        return userRepository.findById(id)
+                .orElseThrow((() -> new NoDataFoundException("User with id " + id + " not found")));
     }
 
     public User insert(User user) {
@@ -55,7 +57,7 @@ public class UserService {
 
     public void delete(Long id) {
         User user = findById(id);
-        user.setStatus("I");
+        user.setStatus('I');
         userRepository.save(user);
     }
 
@@ -72,13 +74,16 @@ public class UserService {
     }
 
     public void dataUpdate(User userToAtt, User user) {
-        String name = (user.getName() != null && user.getName().isEmpty() && user.getName().isBlank()) ? user.getName() : userToAtt.getName();
+        String name = (user.getName() != null && user.getName().isEmpty() && user.getName().isBlank()) ? user.getName()
+                : userToAtt.getName();
         userToAtt.setName(name);
 
-        String Username = (user.getUsername() != null && user.getUsername().isEmpty() && user.getUsername().isBlank()) ? user.getUsername() : userToAtt.getUsername();
+        String Username = (user.getUsername() != null && user.getUsername().isEmpty() && user.getUsername().isBlank())
+                ? user.getUsername()
+                : userToAtt.getUsername();
         userToAtt.setUsername(Username);
 
-        Calendar calendar = user.getBirthday() != null ? user.getBirthday() : userToAtt.getBirthday();
+        LocalDate calendar = user.getBirthday() != null ? user.getBirthday() : userToAtt.getBirthday();
         userToAtt.setBirthday(calendar);
 
         Address address = user.getAddress() != null ? user.getAddress() : userToAtt.getAddress();
@@ -96,4 +101,10 @@ public class UserService {
     public User fromDTOResponse(UserNoProtectedDataDTO userNoProtectedDataDTO) {
         return new User(userNoProtectedDataDTO);
     }
+
+    public User findByUsername(String username) {
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new NoDataFoundException("Username not found"));
+    }
+
 }

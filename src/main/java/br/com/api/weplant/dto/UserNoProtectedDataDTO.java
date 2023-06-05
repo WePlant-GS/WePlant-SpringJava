@@ -1,12 +1,13 @@
 package br.com.api.weplant.dto;
 
 
+import java.time.LocalDate;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import br.com.api.weplant.entities.Address;
 import br.com.api.weplant.entities.Phone;
 import br.com.api.weplant.entities.User;
-import com.fasterxml.jackson.annotation.JsonFormat;
-
-import java.util.Calendar;
 
 
 public record UserNoProtectedDataDTO(
@@ -14,13 +15,13 @@ public record UserNoProtectedDataDTO(
      String name,
 
      @JsonFormat(pattern = "dd/MM/yyyy")
-     Calendar birthday,
+     LocalDate birthday,
 
      String username,
 
      String email,
 
-     String status,
+     Character status,
 
      Address address,
 

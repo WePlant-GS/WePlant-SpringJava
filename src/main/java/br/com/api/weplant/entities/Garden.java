@@ -1,7 +1,8 @@
 package br.com.api.weplant.entities;
 
-import br.com.api.weplant.dto.GardenDTO;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import br.com.api.weplant.dto.GardenDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,20 +17,19 @@ import java.util.List;
 @Builder
 @Data
 @Table(name = "tb_wp_garden")
-@SequenceGenerator(name = "gardenSequence", sequenceName = "SQ_TB_WP_GARDEN",allocationSize = 1)
 public class Garden {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "gardenSequence")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "garden_name", length = 20, nullable = false)
+    @Column(name = "garden_name", length = 50, nullable = false)
     private String name;
 
-    @Column(nullable = false)
+    @Column(nullable = false,length = 15)
     private String status;
 
-    @Column(nullable = false)
+    @Column(nullable = false,length = 50)
     private String plant;
 
     @Column(length = 1)
@@ -39,6 +39,7 @@ public class Garden {
     private List<Note> notes;
 
     @ManyToOne(cascade = CascadeType.DETACH)
+    @JoinColumn(nullable = false)
     @JsonIgnore
     private User user;
 
