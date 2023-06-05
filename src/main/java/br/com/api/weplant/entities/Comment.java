@@ -2,6 +2,7 @@ package br.com.api.weplant.entities;
 
 import java.time.LocalDate;
 
+import br.com.api.weplant.dto.CommentRegisterDTO;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -42,6 +43,10 @@ public class Comment {
     @JoinColumn(nullable = false)
     private Post post;
 
-    @Column(nullable = false)
-    private LocalDate date_comment; 
+    public Comment(String body, User user, Calendar date, Post post) {
+        this.body = body;
+        this.user = user;
+        this.date = date;
+        this.post = post;
+    }
 }

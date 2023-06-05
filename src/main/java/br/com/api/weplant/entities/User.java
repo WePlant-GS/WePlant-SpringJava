@@ -1,6 +1,7 @@
 package br.com.api.weplant.entities;
 
 import java.time.LocalDate;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.List;
 
@@ -41,7 +42,7 @@ public class User implements UserDetails {
     private String name;
 
     @Column(nullable = false)
-    private LocalDate birthday;
+    private Calendar birthday;
 
     @Column(length = 20, nullable = false, unique = true)
     private String username;

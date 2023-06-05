@@ -83,7 +83,7 @@ public class UserService {
                 : userToAtt.getUsername();
         userToAtt.setUsername(Username);
 
-        LocalDate calendar = user.getBirthday() != null ? user.getBirthday() : userToAtt.getBirthday();
+        Calendar calendar = user.getBirthday() != null ? user.getBirthday() : userToAtt.getBirthday();
         userToAtt.setBirthday(calendar);
 
         Address address = user.getAddress() != null ? user.getAddress() : userToAtt.getAddress();

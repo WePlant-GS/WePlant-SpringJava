@@ -1,6 +1,7 @@
 package br.com.api.weplant.dto;
 
 import java.time.LocalDate;
+import java.util.Calendar;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -16,7 +17,7 @@ public record UserRegisterDTO(
 
         @NotNull @NotBlank
         @JsonFormat(pattern = "dd/MM/yyyy")
-        LocalDate birthday,
+        Calendar birthday,
 
         @NotNull @NotBlank
         String username,

@@ -42,4 +42,8 @@ public class Post {
         this.date = Calendar.getInstance();
     }
 
+    public void addComment(Comment comment) {
+        this.comments.add(comment);
+    }
+
 }
