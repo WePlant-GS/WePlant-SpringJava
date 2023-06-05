@@ -7,6 +7,9 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import br.com.api.weplant.dto.GardenDTO;
+import br.com.api.weplant.dto.UserLogin;
 import br.com.api.weplant.dto.UserNoProtectedDataDTO;
 import br.com.api.weplant.dto.UserRegisterDTO;
 import br.com.api.weplant.entities.Garden;
@@ -36,10 +40,14 @@ public class UserController {
     @Autowired
     private GardenService gardenService;
 
+    @Autowired
+    private AuthenticationManager manager;
+
     @GetMapping("/all")
     public ResponseEntity<List<UserNoProtectedDataDTO>> findAll() {
         List<User> users = userService.findAll();
-        List<UserNoProtectedDataDTO> usersDTO = users.stream().map(UserNoProtectedDataDTO::new).collect(Collectors.toList());
+        List<UserNoProtectedDataDTO> usersDTO = users.stream().map(UserNoProtectedDataDTO::new)
+                .collect(Collectors.toList());
         return ResponseEntity.ok().body(usersDTO);
     }
 
@@ -53,7 +61,8 @@ public class UserController {
     public ResponseEntity<User> insert(@RequestBody UserRegisterDTO userRegisterDTO) {
         User user = userService.fromDTORegister(userRegisterDTO);
         userService.insert(user);
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}").buildAndExpand(userService.findAll().size()).toUri();
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}")
+                .buildAndExpand(userService.findAll().size()).toUri();
         return ResponseEntity.created(uri).body(user);
     }
 
@@ -81,6 +90,17 @@ public class UserController {
     public ResponseEntity<GardenDTO> findGardenByUserID(@PathVariable Long id) {
         Garden garden = gardenService.findByUserId(id);
         return ResponseEntity.ok().body(new GardenDTO(garden));
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<Object> login(@RequestBody @Valid UserLogin data) {
+
+        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(data.username(),
+                data.password());
+
+         Authentication autentication = manager.authenticate(token);
+
+        return ResponseEntity.ok().build();
     }
 
 }

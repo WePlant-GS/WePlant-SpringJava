@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import br.com.api.weplant.dto.UserNoProtectedDataDTO;
@@ -30,15 +31,20 @@ public class UserService {
     @Autowired
     private PhoneService phoneService;
 
+    @Autowired
+    private PasswordEncoder encoder;
+
     public List<User> findAll() {
         return userRepository.findAll();
     }
 
     public User findById(Long id) {
-        return userRepository.findById(id).orElseThrow((() -> new NoDataFoundException("User with id " + id + " not found")));
+        return userRepository.findById(id)
+                .orElseThrow((() -> new NoDataFoundException("User with id " + id + " not found")));
     }
 
     public User insert(User user) {
+        user.setPassword(encoder.encode(user.getPassword()));
         addressService.insert(user.getAddress());
         phoneService.insert(user.getPhone());
         return userRepository.save(user);
@@ -66,10 +72,13 @@ public class UserService {
     }
 
     public void dataUpdate(User userToAtt, User user) {
-        String name = (user.getName() != null && user.getName().isEmpty() && user.getName().isBlank()) ? user.getName() : userToAtt.getName();
+        String name = (user.getName() != null && user.getName().isEmpty() && user.getName().isBlank()) ? user.getName()
+                : userToAtt.getName();
         userToAtt.setName(name);
 
-        String Username = (user.getUsername() != null && user.getUsername().isEmpty() && user.getUsername().isBlank()) ? user.getUsername() : userToAtt.getUsername();
+        String Username = (user.getUsername() != null && user.getUsername().isEmpty() && user.getUsername().isBlank())
+                ? user.getUsername()
+                : userToAtt.getUsername();
         userToAtt.setUsername(Username);
 
         LocalDate calendar = user.getBirthday() != null ? user.getBirthday() : userToAtt.getBirthday();
@@ -90,4 +99,10 @@ public class UserService {
     public User fromDTOResponse(UserNoProtectedDataDTO userNoProtectedDataDTO) {
         return new User(userNoProtectedDataDTO);
     }
+
+    public User findByUsername(String username) {
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new NoDataFoundException("Username not found"));
+    }
+
 }

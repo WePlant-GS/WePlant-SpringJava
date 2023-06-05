@@ -1,7 +1,12 @@
 package br.com.api.weplant.entities;
 
 import java.time.LocalDate;
+import java.util.Collection;
 import java.util.List;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import br.com.api.weplant.dto.UserNoProtectedDataDTO;
 import br.com.api.weplant.dto.UserRegisterDTO;
@@ -26,7 +31,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @Data
 @Table(name = "tb_wp_user")
-public class User {
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,7 +49,7 @@ public class User {
     @Column(name = "user_email", length = 30, nullable = false, unique = true)
     private String email;
 
-    @Column(name = "user_password", nullable = false,length = 100)
+    @Column(name = "user_password", nullable = false, length = 100)
     private String password;
 
     @Column(name = "user_status", length = 1, nullable = false)
@@ -89,5 +94,42 @@ public class User {
         this.email = userNoProtectedDataDTO.email();
         this.address = userNoProtectedDataDTO.address();
         this.phone = userNoProtectedDataDTO.phone();
+    }
+
+    @Override
+    public String getPassword() {
+
+        return password;
+    }
+
+    @Override
+    public String getUsername() {
+
+        return username;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority("USER"));
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 }
