@@ -8,7 +8,6 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-@Repository
 public interface GardenRepository extends JpaRepository<Garden, Long> {
 
     List<Garden> findAllByUserId(Long id);
