@@ -21,12 +21,14 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import br.com.api.weplant.dto.GardenDTO;
+import br.com.api.weplant.dto.TokenJWT;
 import br.com.api.weplant.dto.UserLogin;
 import br.com.api.weplant.dto.UserNoProtectedDataDTO;
 import br.com.api.weplant.dto.UserRegisterDTO;
 import br.com.api.weplant.entities.Garden;
 import br.com.api.weplant.entities.User;
 import br.com.api.weplant.services.GardenService;
+import br.com.api.weplant.services.TokenService;
 import br.com.api.weplant.services.UserService;
 import jakarta.validation.Valid;
 
@@ -42,6 +44,9 @@ public class UserController {
 
     @Autowired
     private AuthenticationManager manager;
+
+    @Autowired
+    private TokenService tokenService;
 
     @GetMapping("/all")
     public ResponseEntity<List<UserNoProtectedDataDTO>> findAll() {
@@ -93,14 +98,24 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Object> login(@RequestBody @Valid UserLogin data) {
+    public ResponseEntity<TokenJWT> login(@RequestBody @Valid UserLogin data) {
 
-        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(data.username(),
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+                data.username(),
                 data.password());
 
-         Authentication autentication = manager.authenticate(token);
+        Authentication autentication = manager.authenticate(authenticationToken);
 
-        return ResponseEntity.ok().build();
+        User teste = (User) autentication.getCredentials();
+
+        String tokenJWT = tokenService.gerarToken((User) autentication.getPrincipal());
+
+        return ResponseEntity.ok().body(new TokenJWT(tokenJWT));
+    }
+
+    @PostMapping("/teste")
+    public ResponseEntity<User> checkUsername(@RequestBody UserLogin username) {
+        return ResponseEntity.ok().body(userService.findByUsername(username.username()));
     }
 
 }
