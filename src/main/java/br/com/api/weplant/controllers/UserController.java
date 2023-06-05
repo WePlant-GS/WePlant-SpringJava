@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -48,6 +49,9 @@ public class UserController {
     @Autowired
     private TokenService tokenService;
 
+    @Autowired
+    private PasswordEncoder encoder;
+
     @GetMapping("/all")
     public ResponseEntity<List<UserNoProtectedDataDTO>> findAll() {
         List<User> users = userService.findAll();
@@ -65,6 +69,7 @@ public class UserController {
     @PostMapping("/add")
     public ResponseEntity<User> insert(@RequestBody UserRegisterDTO userRegisterDTO) {
         User user = userService.fromDTORegister(userRegisterDTO);
+        user.setPassword(encoder.encode(user.getPassword()));
         userService.insert(user);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}")
                 .buildAndExpand(userService.findAll().size()).toUri();
@@ -105,8 +110,6 @@ public class UserController {
                 data.password());
 
         Authentication autentication = manager.authenticate(authenticationToken);
-
-        User teste = (User) autentication.getCredentials();
 
         String tokenJWT = tokenService.gerarToken((User) autentication.getPrincipal());
 

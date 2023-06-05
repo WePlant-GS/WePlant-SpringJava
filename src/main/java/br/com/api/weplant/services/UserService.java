@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import br.com.api.weplant.dto.UserNoProtectedDataDTO;
@@ -31,9 +30,7 @@ public class UserService {
     @Autowired
     private PhoneService phoneService;
 
-    @Autowired
-    private PasswordEncoder encoder;
-
+ 
     public List<User> findAll() {
         return userRepository.findAll();
     }
@@ -44,7 +41,6 @@ public class UserService {
     }
 
     public User insert(User user) {
-        user.setPassword(encoder.encode(user.getPassword()));
         addressService.insert(user.getAddress());
         phoneService.insert(user.getPhone());
         return userRepository.save(user);

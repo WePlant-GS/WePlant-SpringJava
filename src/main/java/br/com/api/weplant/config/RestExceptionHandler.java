@@ -6,10 +6,12 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 
 import br.com.api.weplant.dto.RestValidationError;
@@ -21,7 +23,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RestControllerAdvice
 public class RestExceptionHandler {
-    
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<List<RestValidationError>> MethodArgumentNotValidHandler(MethodArgumentNotValidException e) {// escre
@@ -72,30 +73,21 @@ public class RestExceptionHandler {
 
     public ResponseEntity<ReturnAPI> DataIntegrityViolationHandler(DataIntegrityViolationException e) {
 
-        if (e.getMessage().contains("23505-214"))
+        return ResponseEntity.badRequest().body(new ReturnAPI("username ou email já cadastrado!"));
 
-            return ResponseEntity.badRequest().body(new ReturnAPI("Usuario ou email já cadastrado!"));
-
-        else
-
-            return ResponseEntity.badRequest().body(new ReturnAPI(e.getMessage()));
     }
 
-    // @ExceptionHandler(BadCredentialsException.class)
+    @ExceptionHandler(BadCredentialsException.class)
 
-    // public ResponseEntity<ReturnAPI>
-    // BadCredentialsHandler(BadCredentialsException e) {
+    public ResponseEntity<ReturnAPI> BadCredentialsHandler(BadCredentialsException e) {
 
-    // return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new
-    // ReturnAPI(e.getMessage()));
-    // }
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ReturnAPI(e.getMessage()));
+    }
 
-    // @ExceptionHandler(JWTVerificationException.class)
-    // public ResponseEntity<ReturnAPI>
-    // JWTVerificationHandler(JWTVerificationException e) {
+    @ExceptionHandler(JWTVerificationException.class)
+    public ResponseEntity<ReturnAPI> JWTVerificationHandler(JWTVerificationException e) {
 
-    // return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new
-    // ReturnAPI(e.getMessage()));
-    // }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ReturnAPI(e.getMessage()));
+    }
 
 }
