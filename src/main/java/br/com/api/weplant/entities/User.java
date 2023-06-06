@@ -5,22 +5,14 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.List;
 
+import jakarta.persistence.*;
+import org.hibernate.annotations.Check;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import br.com.api.weplant.dto.UserNoProtectedDataDTO;
 import br.com.api.weplant.dto.UserRegisterDTO;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -32,17 +24,19 @@ import lombok.NoArgsConstructor;
 @Builder
 @Data
 @Table(name = "tb_wp_user")
+@Check(constraints = "user_status IN ('A', 'I')")
+@SequenceGenerator(name = "userSq", sequenceName = "SQ_TB_WP_USER", allocationSize = 1)
 public class User implements UserDetails {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "userSQ")
     private Long id;
 
     @Column(name = "complete_name", length = 30, nullable = false)
     private String name;
 
     @Column(nullable = false)
-    private Calendar birthday;
+    private LocalDate birthday;
 
     @Column(length = 20, nullable = false, unique = true)
     private String username;
@@ -54,14 +48,14 @@ public class User implements UserDetails {
     private String password;
 
     @Column(name = "user_status", length = 1, nullable = false)
-    private Character status;
+    private String status;
 
     @OneToOne
-    @JoinColumn(nullable = false, unique = true)
+    @JoinColumn(name = "address_id", nullable = false)
     private Address address;
 
     @OneToOne
-    @JoinColumn(nullable = false, unique = true)
+    @JoinColumn(name = "phone_id", nullable = false)
     private Phone phone;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
@@ -83,7 +77,7 @@ public class User implements UserDetails {
         this.username = userRegisterDTO.username();
         this.email = userRegisterDTO.email();
         this.password = userRegisterDTO.password();
-        this.status = 'A';
+        this.status = "A";
         setAddress(userRegisterDTO.address());
         setPhone(userRegisterDTO.phone());
     }

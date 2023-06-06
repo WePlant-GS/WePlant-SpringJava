@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 
+import java.time.LocalDate;
 import java.util.Calendar;
 
 @AllArgsConstructor

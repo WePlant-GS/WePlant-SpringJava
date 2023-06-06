@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.List;
 
@@ -25,9 +26,6 @@ public class UserService {
 
     @Autowired
     private AddressService addressService;
-
-    @Autowired
-    private PostService postService;
 
     @Autowired
     private PhoneService phoneService;
@@ -57,7 +55,7 @@ public class UserService {
 
     public void delete(Long id) {
         User user = findById(id);
-        user.setStatus('I');
+        user.setStatus("I");
         userRepository.save(user);
     }
 
@@ -69,9 +67,9 @@ public class UserService {
         gardenService.insert(garden);
     }
 
-    public Page<PostReducedDTO> findAllUserPostByUserId(Long id, Pageable pageable) {
-        return postService.findAllByUserId(id, pageable).map(PostReducedDTO::new);
-    }
+//    public Page<PostReducedDTO> findAllUserPostByUserId(Long id, Pageable pageable) {
+//        return postService.findAllByUserId(id, pageable).map(PostReducedDTO::new);
+//    }
 
     public void dataUpdate(User userToAtt, User user) {
         String name = (user.getName() != null && user.getName().isEmpty() && user.getName().isBlank()) ? user.getName()
@@ -83,8 +81,8 @@ public class UserService {
                 : userToAtt.getUsername();
         userToAtt.setUsername(Username);
 
-        Calendar calendar = user.getBirthday() != null ? user.getBirthday() : userToAtt.getBirthday();
-        userToAtt.setBirthday(calendar);
+        LocalDate birthday = user.getBirthday() != null ? user.getBirthday() : userToAtt.getBirthday();
+        userToAtt.setBirthday(birthday);
 
         Address address = user.getAddress() != null ? user.getAddress() : userToAtt.getAddress();
         userToAtt.setAddress(address);

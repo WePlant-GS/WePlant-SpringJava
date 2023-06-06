@@ -1,21 +1,11 @@
 package br.com.api.weplant.entities;
 
-import java.time.LocalDate;
-
-import br.com.api.weplant.dto.CommentRegisterDTO;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.Calendar;
 
 @Entity
@@ -33,14 +23,14 @@ public class Comment {
     private String body;
 
     @ManyToOne(cascade = CascadeType.DETACH)
-    @JoinColumn(nullable = false)
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @Column(name = "comment_date", nullable = false)
     private Calendar date;
 
     @ManyToOne(cascade = CascadeType.DETACH)
-    @JoinColumn(nullable = false)
+    @JoinColumn(name = "post_id", nullable = false)
     private Post post;
 
     public Comment(String body, User user, Calendar date, Post post) {

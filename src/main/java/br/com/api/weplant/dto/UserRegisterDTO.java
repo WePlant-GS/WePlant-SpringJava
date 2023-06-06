@@ -17,7 +17,7 @@ public record UserRegisterDTO(
 
         @NotNull @NotBlank
         @JsonFormat(pattern = "dd/MM/yyyy")
-        Calendar birthday,
+        LocalDate birthday,
 
         @NotNull @NotBlank
         String username,

@@ -16,13 +16,13 @@ public record UserNoProtectedDataDTO(
      String name,
 
      @JsonFormat(pattern = "dd/MM/yyyy")
-     Calendar birthday,
+     LocalDate birthday,
 
      String username,
 
      String email,
 
-     Character status,
+     String status,
 
      Address address,
 

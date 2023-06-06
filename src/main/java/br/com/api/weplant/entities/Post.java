@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Check;
+
 import java.util.Calendar;
 import java.util.List;
 
@@ -30,7 +32,7 @@ public class Post {
     private Calendar date;
 
     @ManyToOne(cascade = CascadeType.DETACH)
-    @JoinColumn(nullable = false)
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.MERGE)

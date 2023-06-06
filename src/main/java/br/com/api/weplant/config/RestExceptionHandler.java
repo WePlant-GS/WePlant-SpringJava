@@ -69,13 +69,12 @@ public class RestExceptionHandler {
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ReturnAPI(e.getMessage()));
     }
 
-    @ExceptionHandler(DataIntegrityViolationException.class)
-
-    public ResponseEntity<ReturnAPI> DataIntegrityViolationHandler(DataIntegrityViolationException e) {
-
-        return ResponseEntity.badRequest().body(new ReturnAPI("username ou email já cadastrado!"));
-
-    }
+//    @ExceptionHandler(DataIntegrityViolationException.class)
+//    public ResponseEntity<ReturnAPI> DataIntegrityViolationHandler(DataIntegrityViolationException e) {
+//
+//        return ResponseEntity.badRequest().body(new ReturnAPI("username ou email já cadastrado!"));
+//
+//    }
 
     @ExceptionHandler(BadCredentialsException.class)
 

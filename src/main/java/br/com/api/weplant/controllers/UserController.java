@@ -35,6 +35,9 @@ public class UserController {
 
     @Autowired
     private GardenService gardenService;
+
+    @Autowired
+    private PostService postService;
   
     @Autowired
     private AuthenticationManager manager;
@@ -97,7 +100,7 @@ public class UserController {
 
     @GetMapping(value = "/{id}/posts")
     public ResponseEntity<Page<PostReducedDTO>> findAllUserPostsByUserId(@PathVariable Long id, @ParameterObject @PageableDefault(size = 5) Pageable pageable) {
-        return ResponseEntity.ok().body(userService.findAllUserPostByUserId(id, pageable));
+        return ResponseEntity.ok().body(postService.findAllByUserId(id, pageable).map(PostReducedDTO::new));
     }
 
     @PostMapping("/login")

@@ -24,6 +24,7 @@ public class Address {
 
     @NotNull @NotBlank
     @JsonFormat(pattern = "nnnnn-nnn")
+    @Column(name = "zip_code")
     private String CEP;
 
     @Column(length = 6, name = "house_number")
@@ -41,11 +42,7 @@ public class Address {
     @Column(length = 50, nullable = false)
     private String state;
 
-    @Column(length = 8, nullable = false)
-    private String zip_code;
-
     @Column(length = 50, nullable = false)
-
     private String country;
 
     @OneToOne(mappedBy = "address")

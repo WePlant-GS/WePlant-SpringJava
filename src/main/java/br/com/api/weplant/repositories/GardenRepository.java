@@ -8,11 +8,10 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
+@Repository
 public interface GardenRepository extends JpaRepository<Garden, Long> {
 
-    List<Garden> findAllByUserId(Long id);
-  
     @Query("from Garden g where g.user.id = :id")
-    Garden findByUserId(@Param("id") Long id);
+    List<Garden> findAllByUserId(@Param("id") Long id);
 
 }

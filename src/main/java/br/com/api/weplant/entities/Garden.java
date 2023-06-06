@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Check;
 
 import java.util.List;
 
@@ -17,6 +18,8 @@ import java.util.List;
 @Builder
 @Data
 @Table(name = "tb_wp_garden")
+@Check(constraints = "status in ('PLANTACAO', 'REGAR', 'CRESCIMENTO','COLHEITA')")
+@Check(constraints = "type in ('V','H')")
 public class Garden {
 
     @Id
@@ -32,14 +35,14 @@ public class Garden {
     @Column(nullable = false,length = 50)
     private String plant;
 
-    @Column(length = 1)
+    @Column(length = 1, nullable = false)
     private String type;//Pode ser V (Vertical) ou H (Horizontal)
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "garden")
     private List<Note> notes;
 
     @ManyToOne(cascade = CascadeType.DETACH)
-    @JoinColumn(nullable = false)
+    @JoinColumn(name = "user_id", nullable = false)
     @JsonIgnore
     private User user;
 
