@@ -9,6 +9,8 @@ import br.com.api.weplant.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -55,6 +57,7 @@ public class UserService {
 
     public void delete(Long id) {
         User user = findById(id);
+        user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
         user.setStatus("I");
         userRepository.save(user);
     }
