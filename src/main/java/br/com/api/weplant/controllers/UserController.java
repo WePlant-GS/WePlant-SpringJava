@@ -79,7 +79,7 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> updateUserStatus(@PathVariable Long id) {
         userService.delete(id);
         return ResponseEntity.noContent().build();
