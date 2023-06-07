@@ -71,6 +71,14 @@ public class User implements UserDetails {
         gardenList.add(garden);
     }
 
+    public void addPost(Post post) {
+        this.postList.add(post);
+    }
+
+    public void addComment(Comment comment) {
+        this.comments.add(comment);
+    }
+
     public User(UserRegisterDTO userRegisterDTO) {
         this.name = userRegisterDTO.name();
         this.birthday = userRegisterDTO.birthday();

@@ -25,7 +25,7 @@ public class Post {
 
     private String image;
 
-    @Column(length = 200)
+    @Column(length = 200, nullable = false)
     private String description;
 
     @Column(name = "post_date", nullable = false)

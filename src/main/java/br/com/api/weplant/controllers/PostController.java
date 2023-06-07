@@ -3,6 +3,7 @@ package br.com.api.weplant.controllers;
 import br.com.api.weplant.dto.CommentDTO;
 import br.com.api.weplant.dto.CommentRegisterDTO;
 import br.com.api.weplant.dto.PostReducedDTO;
+import br.com.api.weplant.entities.Post;
 import br.com.api.weplant.services.PostService;
 import jakarta.validation.Valid;
 import org.springdoc.core.annotations.ParameterObject;
@@ -12,7 +13,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.Calendar;
 import java.util.List;
 
@@ -22,6 +25,14 @@ public class PostController {
 
     @Autowired
     private PostService postService;
+
+    @PostMapping("/add/user/{id}")
+    public ResponseEntity<Void> insert(@RequestBody @Valid PostReducedDTO postDTO, @PathVariable Long id) {
+        postService.insert(new Post(postDTO), id);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}")
+                .buildAndExpand(postService.findAll().size()).toUri();
+        return ResponseEntity.created(uri).build();
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<PostReducedDTO> findById(@PathVariable Long id) {
