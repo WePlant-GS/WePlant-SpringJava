@@ -117,9 +117,4 @@ public class UserController {
         return ResponseEntity.ok().body(new TokenJWT(tokenJWT));
     }
 
-    @PostMapping("/teste")
-    public ResponseEntity<User> checkUsername(@RequestBody UserLogin username) {
-        return ResponseEntity.ok().body(userService.findByUsername(username.username()));
-    }
-
 }
