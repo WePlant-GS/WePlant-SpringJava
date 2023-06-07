@@ -76,19 +76,25 @@ public class UserService {
                 : userToAtt.getName();
         userToAtt.setName(name);
 
-        String Username = (user.getUsername() != null && user.getUsername().isEmpty() && user.getUsername().isBlank())
+        String username = (user.getUsername() != null && user.getUsername().isEmpty() && user.getUsername().isBlank())
                 ? user.getUsername()
                 : userToAtt.getUsername();
-        userToAtt.setUsername(Username);
+        userToAtt.setUsername(username);
 
         LocalDate birthday = user.getBirthday() != null ? user.getBirthday() : userToAtt.getBirthday();
         userToAtt.setBirthday(birthday);
 
         Address address = user.getAddress() != null ? user.getAddress() : userToAtt.getAddress();
-        userToAtt.setAddress(address);
+        if (!address.equals(userToAtt.getAddress())) {
+            address.setId(userToAtt.getAddress().getId());
+            userToAtt.setAddress(addressService.insert(address));
+        }
 
         Phone phone = user.getPhone() != null ? user.getPhone() : userToAtt.getPhone();
-        userToAtt.setPhone(phone);
+        if (!phone.equals(userToAtt.getPhone())) {
+            phone.setId(userToAtt.getPhone().getId());
+            userToAtt.setPhone(phoneService.insert(phone));
+        }
 
     }
 
