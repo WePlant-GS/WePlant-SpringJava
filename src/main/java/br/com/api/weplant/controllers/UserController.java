@@ -112,9 +112,11 @@ public class UserController {
 
         Authentication autentication = manager.authenticate(authenticationToken);
 
-        String tokenJWT = tokenService.gerarToken((User) autentication.getPrincipal());
+        User login = (User) autentication.getPrincipal();
 
-        return ResponseEntity.ok().body(new TokenJWT(tokenJWT));
+        String tokenJWT = tokenService.gerarToken(login);
+
+        return ResponseEntity.ok().body(new TokenJWT(login.getId(), tokenJWT));
     }
 
 }

@@ -64,6 +64,7 @@ public class UserService {
         user.addGarden(garden);
         userRepository.save(user);
         userRepository.flush();
+        garden.setUser(user);
         gardenService.insert(garden);
     }
 
