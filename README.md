@@ -251,6 +251,10 @@ Descrição: Remove um comentário com o ID especificado, pertencente ao post co
 
 <br/>
 
+# <span style="color: #63C71F;">Pitch</span>
+
+[Assista ao video Pitch](https://youtu.be/0_QOPCaIbMc)
+
 # <span style="color: #63C71F;">Considerações Finais</span>
 
         O desenvolvimento do WePlant é um projeto realizado como parte da prova semestral da faculdade FIAP, com o tema "Combate à fome através da agricultura sustentável".
